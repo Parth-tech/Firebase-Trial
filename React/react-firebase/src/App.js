@@ -1,18 +1,20 @@
 import './App.css';
 import { useEffect, useState } from 'react';
-import { app } from './firebaseConfig';
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged
-} from 'firebase/auth';
+import { app, database } from './firebaseConfig';
+import { collection, addDoc } from 'firebase/firestore';
+
 function App() {
-  const auth = getAuth();
+  // const auth = getAuth();
+  
+  const missionsCollectionRef = collection(database, 'missions');
+  const usersCollectionRef = collection(database, 'users');
+  
+  
   const [data, setData] = useState({
     email: '',
     password: ''
   })
+  
   const handleInputs = (event) => {
     let inputs = { [event.target.name]: event.target.value }
 
@@ -20,22 +22,15 @@ function App() {
   }
 
   const addData = () => {
-    signInWithEmailAndPassword(auth, data.email, data.password)
+    // signInWithEmailAndPassword(auth, data.email, data.password)
   }
 
   const handlelogout = () => {
-    signOut(auth);
+    // signOut(auth);
   }
 
   useEffect(() => {
-    onAuthStateChanged(auth, (data) => {
-      if(data){
-        alert("Logged In")
-      }
-      else {
-        alert('Not Logged In')
-      }
-    })
+    
   }, [])
   return (
     <div className="App-header">
